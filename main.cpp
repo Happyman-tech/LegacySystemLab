@@ -1,8 +1,9 @@
 #include <iostream>
-#include "Header1.h"
+#include "Header1.h" Iteration1: Add modular structure;
 using namespace std;
 
-void checkValidInput() {
+void checkValidInput() { Iteration 3: Add checkValidInput() and exception handling in main()
+
     if (cin.fail()) {
         throw "Incorrect input";
     }
@@ -22,7 +23,7 @@ int main() {
 
         checkValidParams(n, h);
 
-        for (double x = a; x <= b; x += h) {
+        for (double x = a; x <= b; x += h) { Iteration2 Move calculation logic to calculate() and parameter checks to checkValidParams()
             double y = calculate(n, x);
             cout << "x=" << x << " y=" << y << endl;
         }
