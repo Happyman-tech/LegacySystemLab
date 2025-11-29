@@ -1,77 +1,40 @@
-#include <iostream> 
+#include <iostream>
+#include "Header1.h"
+using namespace std;
 
-#include <fstream> 
+void checkValidInput() {
+    if (cin.fail()) {
+        throw "Incorrect input";
+    }
+}
 
-int main() { 
+int main() {
+    double a, b, h;
+    int n;
+    try {
+        cout << "Input a,b,h:";
+        cin >> a >> b >> h;
+        checkValidInput();
 
-double a, b, h; 
+        cout << "Input n>=1,n=";
+        cin >> n;
+        checkValidInput();
 
-int n; 
+        checkValidParams(n, h);
 
-std::cout << "Enter a,b,h,n:"; 
+        for (double x = a; x <= b; x += h) {
+            double y = calculate(n, x);
+            cout << "x=" << x << " y=" << y << endl;
+        }
+    }
+    catch (const char* ex) {
+        cout << ex << endl;
+        return -1;
+    }
+    catch (...) {
+        cout << "Error" << endl;
+        return -2;
+    }
+    return 0;
+}
 
-std::cin >> a >> b >> h >> n; 
-
-if (n < 1 || h == 0) { 
-
-std::cout << "Wrong data"; 
-
-return 0; 
-
-} 
-
-char saveToFile; 
-
-std::cout << "Save result to file?"; 
-
-std::cin >> saveToFile; 
-
-std::ofstream fout("result.txt"); 
-
-for (double x = a; x <= b; x += h) { 
-
-double y = 0.0; 
-
-if (x < 0.0) { 
-
-for (int i = 1; i <= n; i++) { 
-
-for (int j = 1; j <= n; j++) { 
-
-y += (x - i + j); 
-
-} 
-
-} 
-
-} 
-
-else { 
-
-for (int i = 1; i < n - 1; i++) { 
-
-y += x / static_cast<double>(i); 
-
-} 
-
-} 
-
-std::cout << "x=" << x << "y=" << y << std::endl; 
-
-if (saveToFile == 'y' || saveToFile == 'Y') { 
-
-fout << "x:" << x << std::endl; 
-
-fout << "y:" << y << std::endl; 
-
-fout << "n:" << n << std::endl; 
-
-} 
-
-} 
-
-fout.close(); 
-
-return 0; 
-
-} 
