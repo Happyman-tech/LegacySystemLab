@@ -1,40 +1,32 @@
-#include <iostream> 
+#include "pch.h" 
 
-#include <fstream> 
+#include "CppUnitTest.h" 
 
-int main() { 
+#include "C:\\Users\\Home\\Downloads\\Тестування програмного забезпечення\\Тестування програмного забезпечення\Header1.h" 
 
-double a, b, h; 
+ 
 
-int n; 
+using namespace Microsoft::VisualStudio::CppUnitTestFramework; 
 
-std::cout << "Enter a,b,h,n:"; 
+void checkValidParams(int n, double h) { 
 
-std::cin >> a >> b >> h >> n; 
+if (n < 1 || h == 0.0) { 
 
-if (n < 1 || h == 0) { 
-
-std::cout << "Wrong data"; 
-
-return 0; 
+throw "Wrong Data"; 
 
 } 
 
-char saveToFile; 
+} 
 
-std::cout << "Save result to file?"; 
+ 
 
-std::cin >> saveToFile; 
-
-std::ofstream fout("result.txt"); 
-
-for (double x = a; x <= b; x += h) { 
+double calculate(int n, double x) { 
 
 double y = 0.0; 
 
 if (x < 0.0) { 
 
-for (int i = 1; i <= n; i++) { 
+for (int i = 1; i <= n - 1; i++) { 
 
 for (int j = 1; j <= n; j++) { 
 
@@ -48,7 +40,7 @@ y += (x - i + j);
 
 else { 
 
-for (int i = 1; i < n - 1; i++) { 
+for (int i = 1; i <= n - 1; i++) { 
 
 y += x / static_cast<double>(i); 
 
@@ -56,22 +48,128 @@ y += x / static_cast<double>(i);
 
 } 
 
-std::cout << "x=" << x << "y=" << y << std::endl; 
+return y; 
 
-if (saveToFile == 'y' || saveToFile == 'Y') { 
+} 
 
-fout << "x:" << x << std::endl; 
+ 
 
-fout << "y:" << y << std::endl; 
+namespace UnitTest2 
 
-fout << "n:" << n << std::endl; 
+{ 
+
+TEST_CLASS(calculate_test) 
+
+{ 
+
+public: 
+
+ 
+
+TEST_METHOD(calculate_get3and2_3returned) 
+
+{ 
+
+int n = 3; 
+
+double x = 2.0; 
+
+double expected = 3.0; 
+
+double actual = calculate(n, x); 
+
+Assert::AreEqual(expected, actual); 
+
+} 
+
+TEST_METHOD(calculate_get2and7_7returned) { 
+
+int n = 2; 
+
+double x = 7.0; 
+
+double expected = 7.0; 
+
+double actual = calculate(n, x); 
+
+Assert::AreEqual(expected, actual); 
+
+} 
+
+}; 
+
+TEST_CLASS(checkValidParams_Tests) { 
+
+public: 
+
+TEST_METHOD(checkValidParams_n10_noExceptionThrown) { 
+
+int n = 10; 
+
+double h = 1.5; 
+
+try { 
+
+checkValidParams(n, h); 
+
+Assert::IsTrue(true); 
+
+} 
+
+catch (...) { 
+
+Assert::Fail(); 
 
 } 
 
 } 
 
-fout.close(); 
+TEST_METHOD(checkValidParams_n0_exceptionThrown) { 
 
-return 0; 
+int n = 0; 
+
+double h = 1.5; 
+
+try { 
+
+checkValidParams(n, h); 
+
+Assert::Fail(); 
 
 } 
+
+catch (...) { 
+
+Assert::IsTrue(true); 
+
+} 
+
+} 
+
+TEST_METHOD(checkValidParams_h0_exceptionThrown) { 
+
+int n = 5; 
+
+double h = 0.0; 
+
+try { 
+
+checkValidParams(n, h); 
+
+Assert::Fail(); 
+
+} 
+
+catch (...) { 
+
+Assert::IsTrue(true); 
+
+} 
+
+} 
+
+ 
+
+}; 
+
+}
